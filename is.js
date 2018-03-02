@@ -73,11 +73,11 @@
     return val === false
   })
   
-  // Handy non-standard/combination types
+  // Handy non-standard/utility types
   
   is.define('nil', function(val) {
-    // Either null or undefined, but not 0. A slightly shorter version of val != null
-    return val === null || val === undefined || typeof val === 'undefined'
+    // Either null or undefined, but not 0.
+    return val == null
   })
   
   is.define('equal', function(val1, val2) {
