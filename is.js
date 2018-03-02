@@ -80,27 +80,44 @@
     return val == null
   })
   
-  is.define('equal', function(val1, val2) {
-    // All-purpose equality-by-value checker.
+  is.define('equal', function(one, two) {
+    // All-purpose recursive equality-by-value checker.
 
-    if (typeof val1 === typeof val2) {
-      if (is.object(val1) && is.object(val2)) {
-        // Both values are objects.
-        if (Object.keys(val1).length !== Object.keys(val2).length) {
-          // The objects have different numbers of values. Not equal.
+    // Don't bother checking values if identity is equal.
+    if (one === two) {
+      return true
+    }
+
+    // Make sure they're at least the same type.
+    if (is(one) === is(two)) {
+      var type = is(one)
+
+      if (type === 'object') {
+        // Compare key counts, then recursively compare values if that passes.
+        if (Object.keys(one).length !== Object.keys(two).length) {
           return false
         }
 
-        // Both are objects with the same number of values.
-        // Run through each one and compare them.
-        for (var key in val1) {
-          if (!is.equal(val1[key], val2[key])) {
+        // Same number of keys. Compare each.
+        for (var key in one) {
+          if (!is.equal(one[key], two[key])) {
+            return false
+          }
+        }
+      } else if (type === 'array') {
+        // Compare lengths, then compare index by index.
+        if (one.length !== two.length) {
+          return false
+        }
+
+        for (let i = 0; i < one.length; i++) {
+          if (!is.equal(one[i], two[i])) {
             return false
           }
         }
       } else {
         // Otherwise just do a regular strict equality check.
-        if (val1 !== val2) {
+        if (one !== two) {
           return false
         }
       }
@@ -108,9 +125,9 @@
       return false
     }
 
-    // If the function hasn't returned false by now, that means our values,
-    // if objects, have the same number of keys, and all have equal values,
-    // and if not objects, they have passed a strict equality check.
+    // If the function hasn't returned false by now, that means our values share a type,
+    // if objects or arrays, have the same number of keys, and all have passed a recursive
+    // equality check. If not objects or arrays, both have passed a strict equality check.
     return true
   })
   
