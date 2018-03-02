@@ -2,7 +2,7 @@
 
 This is `is`. It's my attempt at simultaneously fixing JavaScript's awkward type checking and doing it with a nice, extendable and readable API. What's wrong with type checking in JS? Well... the `typeof` keyword returns `'object'` for both objects and arrays. So helpful. Thanks JavaScript. Determining whether that thing is in fact an array or object involves calling `Array.isArray(thing)`, checking if it has a `.length` property or some other such nonsense, and it will also simply return `'object'` for any custom "types" (particular object configurations, rather), which means an operator meant for checking types doesn't actually do its one and only job with enough specificity to be useful.
 
-The worst part is that `typeof` isn't really *wrong*. Everything in JS *is* an object. That's how it all works, but I don't care how things work when I'm trying to simply *use* the language. The needs of a user and the facts of implementation don't always align perfectly. I've done my best to fix that, and I've also included some extra tools for things that start out annoying and become routine. Stuff like `!thing` returning `true` for either `null`, `undefined` or `0`. I almost never consider `0` to be falsy. I know it's a holdover from C, but JS has had a boolean type from the start. Not including `0` is a simple as `thing == null`, which is equivalent to `thing === null || thing === undefined`, which is something you'd likely never guess and is non-obvious at a glance. It's not the best. Already we're mixing unary operators, binary operators, function calls and duck typing just to manage some basic goddamn types.
+The worst part is that `typeof` isn't really *wrong*. Everything in JS *is* an object. That's how it all works, but I don't care how things work when I'm trying to simply *use* the language. The needs of a user and the facts of implementation don't always align perfectly. I've done my best to fix that, and I've also included some extra tools for things that start out annoying and become routine. Stuff like `!thing` returning `true` for either `null`, `undefined` or `0`. I almost never consider `0` to be falsy. I know it's a holdover from C, but JS has had a boolean type from the start. Not including `0` is as simple as `thing == null`, which is equivalent to `thing === null || thing === undefined`, which is something you'd likely never guess and is non-obvious at a glance. It's not the best. Already we're mixing unary operators, binary operators, function calls and duck typing just to manage some basic goddamn types.
 
 ## Try this instead:
 
@@ -86,7 +86,7 @@ instance.hexColor('#ff0088') // true
 is.hexColor('#ff0088') // TypeError: is.hexColor is not a function
 ```
 
-You can define as many properties you want on an instance and it won't pollute the global copy of `is`. In fact, if you wanted to you could nest instances inside the global `is`:
+You can define as many properties as you want on an instance and it won't pollute the global copy of `is`. In fact, if you wanted to you could nest instances inside the global `is`:
 
 ```javascript
 is.color = is.instance()
