@@ -36,17 +36,7 @@ is.define('object', function(val) {
 })
 ```
 
-You don't even have to use `define` if you don't want to. `is` is literally just a regular object.
-
-```javascript
-is.object = function(val) {
-  return typeof val === 'object'
-    && !Array.isArray(val)
-    && val !== null
-}
-```
-
-It's super simple. You could write `is` yourself in a couple minutes. Fortunately, I already did. `is` comes with all the basic types predefined, but you can also define whatever else you might find useful:
+It's super simple. You could write `is` yourself in a few minutes. Fortunately, I already did. `is` comes with all the basic types predefined, but you can also define whatever else you might find useful:
 
 ```javascript
 is.define('vector3', function(val) {
@@ -104,3 +94,6 @@ is.color.rgb({ r: 128, g: 62, b: 232 }) // true
 ```
 
 But I digress. Set it up however you want, or just use it out of the box. Hopefully you find it useful. Require it in Node, use a script tag in HTML. It should work just about anywhere. Have fun!
+
+# Negation
+

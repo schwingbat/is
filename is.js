@@ -56,15 +56,15 @@
   })
   
   is.define('number', function(val) {
-    return typeof val === 'number'
+    return typeof val === 'number' && !isNaN(val)
   })
 
   is.define('integer', function(val) {
-    return is.number(val) && val.toString().indexOf('.') === -1
+    return is.number(val) && val % 1 === 0
   })
 
   is.define('decimal', function(val) {
-    return is.number(val) && !is.integer(val)
+    return is.number(val) && val % 1 !== 0
   })
   
   is.define('boolean', function(val) {
@@ -97,6 +97,13 @@
   
   // Handy non-standard/utility types
   
+  is.define('what', is) // If you prefer is.what(thing) instead of is(thing)
+  is.define('wat', is)
+  is.define('co', is)
+  is.define('stupid', function(val) {
+    return val.toLowerCase() === 'morgan'
+  })
+
   is.define('nil', function(val) {
     // Either null or undefined, but not 0.
     return val == null

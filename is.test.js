@@ -184,6 +184,10 @@ describe('is.number', function() {
     expect(is.number(0o777)).toBe(true)
   })
 
+  it('considers NaN to not be a number', function() {
+    expect(is.number(NaN)).toBe(false)
+  })
+
   it('rejects non-numbers', function() {
     expect(is.number('1')).toBe(false)
     expect(is.number())
