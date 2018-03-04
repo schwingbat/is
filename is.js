@@ -1,4 +1,4 @@
-;(function makeIs(instance) {
+(function makeIs(instance) {
   var is = function(val) {
     // Instead of returning true or false, this function returns a string containing the type.
     // Kind of like typeof, but less bad.
@@ -7,7 +7,18 @@
 
     return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
   }
+
+  // Aliases: is.an.integer(5), is.a.string('test')
+
+  is.a = is
+  is.an = is
   
+  // Some tricksy negation.
+
+  is.not = {}
+  is.not.a = is.not
+  is.not.an = is.not
+
   // The actual "library"...
 
   is.define = function(name, test) {
@@ -15,12 +26,15 @@
       throw new Error('Cannot redefine `is.define`')
     }
     is[name] = test
+    is.not[name] = function(val) {
+      return !test(val)
+    }
   }
 
   is.instance = function() {
     return makeIs(true)
   }
-  
+
   // Standard types
   
   is.define('object', function(val) {
@@ -54,7 +68,7 @@
   })
   
   is.define('boolean', function(val) {
-    return typeof val === 'boolean'
+    return val === true || val === false
   })
   
   is.define('null', function(val) {
@@ -62,7 +76,11 @@
   })
   
   is.define('undefined', function(val) {
-    return typeof val === 'undefined'
+    return val === undefined
+  })
+
+  is.define('defined', function(val) {
+    return val !== undefined
   })
   
   is.define('true', function(val) {
@@ -71,6 +89,10 @@
   
   is.define('false', function(val) {
     return val === false
+  })
+
+  is.define('nan', function(val) {
+    return isNaN(val)
   })
   
   // Handy non-standard/utility types
@@ -142,4 +164,4 @@
   } else if (!is.nil(global)) {
     global.is = is
   }
-})(false)
+})(false);

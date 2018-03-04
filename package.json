@@ -1,6 +1,6 @@
 {
   "name": "@schwingbat/is",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A JS type checking \"library\"",
   "main": "is.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://www.github.com/vantaure/is"
+    "url": "https://www.github.com/schwingbat/is"
   },
   "author": "Tony McCoy <tony@ratwizard.io>",
   "license": "MIT",

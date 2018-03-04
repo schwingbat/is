@@ -50,7 +50,7 @@ describe('is.instance', function() {
     expect(typeof instance.define).toBe('function')
   })
 
-  it('should not pollute the global `is` when properties are added to an instance', function() {
+  it('does not pollute the global `is` when definitions are added', function() {
     const instance = is.instance()
 
     instance.define('test1', function() {
@@ -69,7 +69,41 @@ describe('is.instance', function() {
   })
 })
 
+describe('is.not (negation)', function() {
+  it('has versions of all `define`d functions', function() {
+    expect(typeof is.not.func).toBe('function')
+    expect(typeof is.not.object).toBe('function')
+    expect(typeof is.not.number).toBe('function')
+  })
+
+  it('returns the opposite result of the normal is.* function', function() {
+    expect(is.not.object({})).toBe(!is.object({}))
+    expect(is.not.number(5)).toBe(!is.number(5))
+    expect(is.not.string('test')).toBe(!is.string('test'))
+    expect(is.not.decimal(1)).toBe(!is.decimal(1))
+  })
+
+  it('also works with not.a/not.an notation', function() {
+    expect(is.not.a === is.not).toBe(true)
+    expect(is.not.an === is.not).toBe(true)
+
+    expect(is.not.a.number('5')).toBe(true)
+    expect(is.not.an.object(2)).toBe(true)
+  })
+})
+
+describe('is.a/is.an', function() {
+  it('is a transparent reference back to `is`', function() {
+    expect(is.a === is).toBe(true)
+    expect(is.an === is).toBe(true)
+  })
+})
+
 describe('is.object', function() {
+  it('is a function', function() {
+    expect(typeof is.object).toBe('function')
+  })
+
   it('correctly identifies objects and rejects non-objects', function() {
     expect(is.object({})).toBe(true)
     expect(is.object({ text: 'Hello, I am indeed an object' }))
@@ -81,9 +115,78 @@ describe('is.object', function() {
   })
 })
 
+describe('is.func', function() {
+  it('is a function', function() {
+    expect(is.func(is.func)).toBe(true)
+  })
+
+  it('correctly identifies functions', function() {
+    expect(is.func(function() {}))
+    expect(is.func(function() {
+      return false
+    }))
+    expect(is.func([].toString)).toBe(true)
+  })
+
+  it('identifies arrow functions', function() {
+    expect(is.func(() => false)).toBe(true)
+  })
+
+  it('rejects non-functions', function() {
+    expect(is.func('fish')).toBe(false)
+    expect(is.func(5)).toBe(false)
+    expect(is.func([])).toBe(false)
+    expect(is.func({})).toBe(false)
+  })
+})
+
+describe('is.array', function() {
+  it('is a function', function() {
+    expect(typeof is.array).toBe('function')
+  })
+
+  it('correctly identifies arrays', function() {
+    expect(is.array([])).toBe(true)
+    expect(is.array([1, 2, 3, 'five'])).toBe(true)
+  })
+
+  it('rejects objects and other non-arrays', function() {
+    expect(is.array({})).toBe(false)
+    expect(is.array("string")).toBe(false)
+  })
+})
+
+describe('is.string', function() {
+  it('is a function', function() {
+    expect(typeof is.string).toBe('function')
+  })
+
+  it('correctly identifies strings', function() {
+    expect(is.string('string')).toBe(true)
+  })
+
+  it('rejects non-strings', function() {
+    expect(is.string(['n', 'o', 'p', 'e'])).toBe(false)
+    expect(is.string(null)).toBe(false)
+    expect(is.string(5)).toBe(false)
+  })
+})
+
 describe('is.number', function() {
   it('is a function', function() {
     expect(typeof is.number).toBe('function')
+  })
+
+  it('correctly identifies numbers', function() {
+    expect(is.number(5)).toBe(true)
+    expect(is.number(.15)).toBe(true)
+    expect(is.number(0xffffff)).toBe(true)
+    expect(is.number(0o777)).toBe(true)
+  })
+
+  it('rejects non-numbers', function() {
+    expect(is.number('1')).toBe(false)
+    expect(is.number())
   })
 })
 
@@ -120,11 +223,124 @@ describe('is.decimal', function() {
   })
 
   it('identifies numbers with a fractional component as a decimal', function() {
-
+    expect(is.decimal(1.5)).toBe(true)
+    expect(is.decimal(198204.12)).toBe(true)
+    expect(is.decimal(-90.0000000000001)).toBe(true)
   })
 
   it('rejects numbers with no fractional component', function() {
+    expect(is.decimal(1)).toBe(false)
+    expect(is.decimal(919191)).toBe(false)
+    expect(is.decimal(451)).toBe(false)
+  })
 
+  it('rejects non-numbers', function() {
+    expect(is.decimal('1')).toBe(false)
+    expect(is.decimal({ not: 'a number' })).toBe(false)
+    expect(is.decimal(NaN)).toBe(false)
+    expect(is.decimal([1, 2, 3])).toBe(false)
+  })
+})
+
+describe('is.boolean', function() {
+  it('is a function', function() {
+    expect(typeof is.boolean).toBe('function')
+  })
+
+  it('correctly identifies booleans', function() {
+    expect(is.boolean(true)).toBe(true)
+    expect(is.boolean(false)).toBe(true)
+  })
+
+  it('rejects non-booleans', function() {
+    expect(is.boolean(0)).toBe(false)
+    expect(is.boolean([])).toBe(false)
+    expect(is.boolean('false')).toBe(false)
+  })
+})
+
+describe('is.null', function() {
+  it('is a function', function() {
+    expect(typeof is.null).toBe('function')
+  })
+
+  it('returns true if value is null', function() {
+    expect(is.null(null)).toBe(true)
+  })
+
+  it('does not return true for undefined', function() {
+    expect(is.null(undefined)).toBe(false)
+  })
+
+  it('does not return true for 0', function() {
+    expect(is.null(0)).toBe(false)
+  })
+})
+
+describe('is.undefined', function() {
+  it('is a function', function() {
+    expect(typeof is.undefined).toBe('function')
+  })
+
+  it('returns true for undefined', function() {
+    expect(is.undefined(undefined)).toBe(true)
+  })
+
+  it('returns false for null and 0', function() {
+    expect(is.undefined(null)).toBe(false)
+    expect(is.undefined(0)).toBe(false)
+  })
+})
+
+describe('is.defined', function() {
+  it('is a function', function() {
+    expect(typeof is.defined).toBe('function')
+  })
+
+  it('returns true if not undefined', function() {
+    expect(is.defined(2)).toBe(true)
+    expect(is.defined(null)).toBe(true)
+    expect(is.defined(0)).toBe(true)
+  })
+
+  it('returns false if undefined', function() {
+    expect(is.defined(undefined)).toBe(false)
+  })
+})
+
+describe('is.true', function() {
+  it('is a function', function() {
+    expect(typeof is.true).toBe('function')
+  })
+})
+
+describe('is.false', function() {
+  it('is a function', function() {
+    expect(typeof is.false).toBe('function')
+  })
+})
+
+describe('is.nan', function() {
+  it('is a function', function() {
+    expect(typeof is.nan).toBe('function')
+  })
+})
+
+describe('is.nil', function() {
+  it('is a function', function() {
+    expect(typeof is.nil).toBe('function')
+  })
+
+  it('returns true for null', function() {
+    expect(is.nil(null)).toBe(true)
+  })
+
+  it('returns true for undefined', function() {
+    expect(is.nil(undefined)).toBe(true)
+  })
+
+  it('returns false for 0', function() {
+    expect(is.nil(0)).toBe(false)
   })
 })
 
@@ -188,23 +404,5 @@ describe('is.equal', function() {
 
     expect(is.equal(objOne, objTwo)).toBe(true)
     expect(is.equal(objTwo, objThree)).toBe(false)
-  })
-})
-
-describe('is.nil', function() {
-  it('is a function', function() {
-    expect(typeof is.nil).toBe('function')
-  })
-
-  it('returns true for null', function() {
-    expect(is.nil(null)).toBe(true)
-  })
-
-  it('returns true for undefined', function() {
-    expect(is.nil(undefined)).toBe(true)
-  })
-
-  it('returns false for 0', function() {
-    expect(is.nil(0)).toBe(false)
   })
 })
