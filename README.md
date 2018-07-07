@@ -16,15 +16,15 @@ is.object(array) // returns false
 is.array(array) // returns true
 is.number('not a number') // returns false
 
-// You can also use it like typeof for built-in types instead of checking against a specific type
+// You can also use is.what() like typeof for built-in types instead of checking against a specific type
 
-is(object) // returns 'object'
-is(array) // returns 'array'
-is(12345) // returns 'number'
-is('what is this?') // returns 'string'
+is.what(object) // returns 'object'
+is.what(array) // returns 'array'
+is.what(12345) // returns 'number'
+is.what('what is this?') // returns 'string'
 ```
 
-All of JavaScript's type annoyances are still there, but they're abstracted away where you don't even have to care that they exist. `is` itself is a function, which are actually callable objects that can have properties and methods attached. One of these is a function called `define` which you can use to define your own 'types'. For example, that `is.object` function above is implemented like this:
+JavaScript's type annoyances are still there, but they're abstracted away where you don't have to care that they exist. `is` itself is a function, which are actually callable objects that can have properties and methods attached. One of these is a function called `define` which you can use to define your own 'types'. For example, that `is.object` function above is implemented like this:
 
 ```javascript
 is.define('object', function(val) {
