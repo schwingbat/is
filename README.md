@@ -1,10 +1,8 @@
 # is.js
 
-This is `is`. It's my attempt at simultaneously fixing JavaScript's awkward type checking and doing it with a nice, extendable and readable API. What's wrong with type checking in JS? Well... the `typeof` keyword returns `'object'` for both objects and arrays. So helpful. Thanks JavaScript. Determining whether that thing is in fact an array or object involves calling `Array.isArray(thing)`, checking if it has a `.length` property or some other such nonsense, and it will also simply return `'object'` for any custom "types" (particular object configurations, rather), which means an operator meant for checking types doesn't actually do its one and only job with enough specificity to be useful.
+Type checking in JS is stupid. `is` is also stupid, but it's more fun.
 
-I've done my best to fix that, and I've also included some extra tools for things that start out annoying and become routine. Stuff like `!thing` returning `true` for either `null`, `undefined` or `0`. I almost never consider `0` to be falsy. I know it's a holdover from C, but JS has had a boolean type from the start. Not including `0` is as simple as `thing == null`, which is equivalent to `thing === null || thing === undefined`, which is something you'd likely never guess and is non-obvious at a glance. It's not the best. Already we're mixing unary operators, binary operators, function calls and duck typing just to manage some basic goddamn types.
-
-## Try this instead:
+## Check it:
 
 ```javascript
 var object = {
@@ -94,6 +92,3 @@ is.color.rgb({ r: 128, g: 62, b: 232 }) // true
 ```
 
 But I digress. Set it up however you want, or just use it out of the box. Hopefully you find it useful. Require it in Node, use a script tag in HTML. It should work just about anywhere. Have fun!
-
-# Negation
-
