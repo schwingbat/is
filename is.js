@@ -1,12 +1,5 @@
 (function makeIs(instance) {
-  var is = function(val) {
-    // Instead of returning true or false, this function returns a string containing the type.
-    // Kind of like typeof, but less bad.
-    // This technique is borrowed from the blog of Angus Croll.
-    // https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
-
-    return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-  }
+  var is = {}
 
   // Aliases: is.an.integer(5), is.a.string('test')
 
@@ -97,11 +90,13 @@
   
   // Handy non-standard/utility types
   
-  is.define('what', is) // If you prefer is.what(thing) instead of is(thing)
-  is.define('wat', is)
-  is.define('co', is)
-  is.define('stupid', function(val) {
-    return val.toLowerCase() === 'morgan'
+  is.define('what', function(val) {
+    // Instead of returning true or false, this function returns a string containing the type.
+    // Kind of like typeof, but less bad.
+    // This technique is borrowed from the blog of Angus Croll.
+    // https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
+
+    return ({}).toString.call(val).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
   })
 
   is.define('nil', function(val) {
@@ -118,8 +113,8 @@
     }
 
     // Make sure they're at least the same type.
-    if (is(one) === is(two)) {
-      var type = is(one)
+    if (is.what(one) === is.what(two)) {
+      var type = is.what(one)
 
       if (type === 'object') {
         // Compare key counts, then recursively compare values if that passes.

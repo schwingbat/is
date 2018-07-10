@@ -1,5 +1,9 @@
 # is.js
 
+```bash
+$ npm i @schwingbat/is
+```
+
 Type checking in JS is stupid. `is` is also stupid, but it's more fun.
 
 ## Check it:
@@ -24,7 +28,7 @@ is.what(12345) // returns 'number'
 is.what('what is this?') // returns 'string'
 ```
 
-JavaScript's type annoyances are still there, but they're abstracted away where you don't have to care that they exist. `is` itself is a function, which are actually callable objects that can have properties and methods attached. One of these is a function called `define` which you can use to define your own 'types'. For example, that `is.object` function above is implemented like this:
+JavaScript's type annoyances are still there, but they're abstracted away where you don't have to care that they exist. `is` in an object with a couple of built in properties. One of these is a function called `define` which you can use to define your own 'types'. For example, that `is.object` function above is implemented like this:
 
 ```javascript
 is.define('object', function(val) {
@@ -61,17 +65,18 @@ It basically goes on like that. That's pretty much all there is to it. You can u
 
 ## Instances
 
-Depending on your program, you might find you want to have multiple copies of `is` with their own separate definitions. Create a new instance like so:
+Depending on your program, you might find you want to have multiple copies of `is` with their own separate definitions. An example in node might look like this:
 
 ```javascript
-var instance = is.instance()
+var is = require('@schwingbat/is').instance()
+var is2 = require('@schwingbat/is').instance()
 
-instance.define('hexColor', function(val) {
+is.define('hexColor', function(val) {
   return is.string(val) && val.length === 7 && val[0] === '#'
 })
 
-instance.hexColor('#ff0088') // true
-is.hexColor('#ff0088') // TypeError: is.hexColor is not a function
+is.hexColor('#ff0088') // true
+is2.hexColor('#ff0088') // TypeError: is.hexColor is not a function
 ```
 
 You can define as many properties as you want on an instance and it won't pollute the global copy of `is`. In fact, if you wanted to you could nest instances inside the global `is`:

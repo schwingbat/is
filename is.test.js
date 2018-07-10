@@ -1,18 +1,8 @@
 const is = require('./is')
 
 describe('is', function() {
-  it('is a function', function() {
-    expect(typeof is).toBe('function')
-  })
-
-  it('correctly identifies basic types when called as a function', function() {
-    expect(is('string')).toBe('string')
-    expect(is(5)).toBe('number')
-    expect(is({})).toBe('object')
-    expect(is([1, 2, 3])).toBe('array')
-    expect(is(null)).toBe('null')
-    expect(is(undefined)).toBe('undefined')
-    expect(is(is)).toBe('function')
+  it('is an object', function() {
+    expect(typeof is).toBe('object')
   })
 })
 
@@ -345,6 +335,22 @@ describe('is.nil', function() {
 
   it('returns false for 0', function() {
     expect(is.nil(0)).toBe(false)
+  })
+})
+
+describe('is.what', function() {
+  it('is a function', function() {
+    expect(typeof is.what).toBe('function')
+  })
+
+  it('correctly identifies primitive types', function() {
+    expect(is.what(5)).toBe('number')
+    expect(is.what({})).toBe('object')
+    expect(is.what('test')).toBe('string')
+    expect(is.what([])).toBe('array')
+    expect(is.what(null)).toBe('null')
+    expect(is.what(undefined)).toBe('undefined')
+    expect(is.what(0)).toBe('number')
   })
 })
 
