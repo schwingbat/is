@@ -134,7 +134,7 @@
           return false
         }
 
-        for (let i = 0; i < one.length; i++) {
+        for (var i = 0; i < one.length; i++) {
           if (!is.equal(one[i], two[i])) {
             return false
           }

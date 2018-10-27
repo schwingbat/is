@@ -4,7 +4,8 @@
   "description": "A JS type checking \"library\"",
   "main": "is.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "minify": "uglifyjs --compress --mangle -o dist/is.min.js -- is.js"
   },
   "repository": {
     "type": "git",
@@ -13,6 +14,7 @@
   "author": "Tony McCoy <tony@ratwizard.io>",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^18.1.0"
+    "jest": "^18.1.0",
+    "uglify-js": "^3.4.9"
   }
 }
